@@ -13,10 +13,8 @@
     "uuid": "^3.3.2",
     "react-transition-group": "^2.5.3",
     "axios": "^0.18.0",
-    "prop-types": "^15.7.1"
-
-
-
+    "prop-types": "^15.7.1",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
