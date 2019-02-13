@@ -5,7 +5,18 @@
   "dependencies": {
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "react-scripts": "2.1.4"
+    "react-scripts": "2.1.4",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1",
+    "reactstrap": "^7.1.0",
+    "bootstrap": "^4.3.0",
+    "uuid": "^3.3.2",
+    "react-transition-group": "^2.5.3",
+    "axios": "^0.18.0",
+    "prop-types": "^15.7.1"
+
+
+
   },
   "scripts": {
     "start": "react-scripts start",
