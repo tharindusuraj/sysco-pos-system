@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { withCookies } from "react-cookie";
+
 import {
   Collapse,
   Navbar,
@@ -7,29 +9,62 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Container
+  Container,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Button
 } from "reactstrap";
 
 class AppNavBar extends Component {
   state = {
-    isOpen: false
+    isOpen: false,
+    modal: false
   };
 
   toggle = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+    this.setState({
+      modal: !this.state.modal
+    });
+    //this.setState({ isOpen: !this.state.isOpen });
   };
+
+  //Clear cookies when looged out
+  logOut = () => {
+    this.props.cookies.remove("loggedUserId", { path: "/" });
+    this.props.cookies.remove("loggedUserName", { path: "/" });
+  };
+
   render() {
+    if (this.props.isLoggedin === false) {
+      var welcome_msg = "";
+      var btn_caption = "Log In";
+    } else {
+      var welcome_msg = "Welcome " + this.props.username + "!";
+      var btn_caption = "Logout";
+    }
     return (
       <div>
         <Navbar color="dark" dark expand="sm" className="mb-5">
           <Container>
-            <NavbarBrand href="/">Shopping List</NavbarBrand>
+            <NavbarBrand href="/">Sysco POS System</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
-            <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="gttps://github.com/nuwantharaka">GIT</NavLink>
+                <NavLink>{welcome_msg}</NavLink>
               </NavItem>
-            </Collapse>
+
+              <Collapse isOpen={this.state.isOpen} navbar />
+
+              <Button
+                onClick={this.logOut.bind(this)}
+                color="secondary"
+                size="sm"
+                href="/"
+              >
+                {btn_caption}
+              </Button>
+            </Nav>
           </Container>
         </Navbar>
       </div>
@@ -37,4 +72,4 @@ class AppNavBar extends Component {
   }
 }
 
-export default AppNavBar;
+export default withCookies(AppNavBar);

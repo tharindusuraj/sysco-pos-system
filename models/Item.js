@@ -3,13 +3,17 @@ const Schema = mongoose.Schema;
 
 //Create Schema
 const ItemSchema = new Schema({
+  cart: {
+    type: String,
+    required: true
+  },
   name: {
     type: String,
     required: true
   },
-  date: {
-    type: Date,
-    defaut: Date.now
+  count: {
+    type: Number,
+    required: true
   }
 });
 

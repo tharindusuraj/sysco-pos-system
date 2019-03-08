@@ -1,25 +1,21 @@
 import React, { Component } from "react";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import AppNavBar from "./components/AppNavBar";
-import ShoppingList from "./components/shoppingList";
+import Homepage from "./Home";
+import { connect } from "react-redux";
 import { Provider } from "react-redux";
-import store from "./store";
-import ItemModal from "./components/ItemModal";
-import { Container } from "reactstrap";
+import { createStore } from "redux";
+import logReducer from "./reducers/logReducer";
+import { CookiesProvider } from "react-cookie";
+
+const logStore = createStore(logReducer);
 
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <div className="App">
-          <AppNavBar />
-          <Container>
-            <ItemModal />
-            <ShoppingList />
-          </Container>
-        </div>
-      </Provider>
+      <CookiesProvider>
+        <Provider store={logStore}>
+          <Homepage />
+        </Provider>
+      </CookiesProvider>
     );
   }
 }

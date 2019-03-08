@@ -5,18 +5,50 @@ const router = express.Router();
 
 const Item = require("../../models/Item");
 
-router.get("/", (req, res) => {
-  Item.find()
-    .sort({ date: -1 })
-    .then(items => res.json(items));
+router.get("/:cart", (req, res) => {
+  Item.find({ cart: req.params.cart }).then(items => {
+    //console.log(items);
+    if (items) {
+      //console.log(items);
+      res.json(items);
+    } else {
+      console.log("items not found");
+    }
+  });
+  //.sort({ name });
 });
 
 router.post("/", (req, res) => {
-  const newItem = new Item({
-    name: req.body.name
-  });
+  //console.log(req.body);
+  Item.findOneAndUpdate(
+    { cart: req.body.cart, name: req.body.name },
+    { $inc: { count: 1 } },
+    { new: true }
+  )
+    .then(item => {
+      if (item) {
+        res.json(item);
+      } else {
+        const newItem = new Item({
+          cart: req.body.cart,
+          name: req.body.name,
+          count: req.body.count
+        });
+        newItem.save().then(item => res.json(item));
+      }
+    })
 
-  newItem.save().then(item => res.json(item));
+    .catch(err => {
+      res.json("catch called");
+    });
+});
+
+router.patch("/", (req, res) => {
+  Item.findOneAndUpdate(
+    { cart: req.body.cart, name: req.body.name },
+    { $set: { count: req.body.count } },
+    { new: true }
+  ).then(item => res.json(item));
 });
 
 router.delete("/:id", (req, res) => {
