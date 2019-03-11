@@ -7,7 +7,7 @@
     "client-install": "npm install --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "test": "jest",
+    "test": "react-scripts test --coverage --verbose",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
@@ -15,6 +15,7 @@
   "author": "Tharindu Suraj",
   "license": "MIT",
   "dependencies": {
+    "babel": "^6.23.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
@@ -35,7 +36,12 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
     "babel-jest": "^24.3.1",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "jest": "^24.3.1",
     "nodemon": "^1.18.10"
   }
