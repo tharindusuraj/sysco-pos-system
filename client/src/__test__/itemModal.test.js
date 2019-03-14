@@ -2,7 +2,7 @@ import React from "react";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
-import { shallow } from "./enzyme";
+import { mount } from "./enzyme";
 import { NavbarBrand, Button, AppNavBar, Container } from "reactstrap";
 import ItemModal from "../components/ItemModal";
 
@@ -22,8 +22,10 @@ describe("<Homepage/> ", () => {
   });
 
   it("Home heading test", () => {
-    const wrapper = shallow(
+    const wrapper = mount(
+      <Provider store={store}>
         <ItemModal />
+      </Provider>
     );
 
     //console.log(wrapper.debug());

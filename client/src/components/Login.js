@@ -7,16 +7,15 @@ import {
   Label,
   Input,
   Button,
-  FormText,
   FormFeedback,
-  NavItem,
-  NavLink,
   Row
 } from "reactstrap";
 import "./Login.css";
 import axios from "axios";
 import { connect } from "react-redux";
-//import shoppingList from "./shoppingList";
+import { BrowserRouter as Router, Redirect } from "react-router-dom";
+import Route from "react-router-dom/Route";
+import AppNavBar from "./AppNavBar";
 
 class Login extends Component {
   constructor(props) {
@@ -119,118 +118,131 @@ class Login extends Component {
     const { username, email, password } = this.state;
     if (this.state.signInUp === "In") {
       return (
-        <Container className="Login">
-          <h2>Sign In</h2>
-          <Form className="form" onSubmit={e => this.submitLogin(e)} size="sm">
-            <Col>
-              <FormGroup>
-                <Label>Email</Label>
-                <Input
-                  //type="email"
-                  name="email"
-                  //id="exampleEmail"
-                  placeholder="Enter your email here"
-                  value={email}
-                  valid={this.state.validate.emailState === "has-success"}
-                  invalid={this.state.validate.emailState === "has-danger"}
-                  onChange={e => {
-                    this.validateEmail(e);
-                    this.handleChange(e);
-                  }}
-                />
-                <FormFeedback valid />
-                <FormFeedback>Please input a correct email.</FormFeedback>
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <Label for="examplePassword">Password</Label>
-                <Input
-                  type="password"
-                  name="password"
-                  //id="examplePassword"
-                  placeholder="********"
-                  value={password}
-                  onChange={e => this.handleChange(e)}
-                />
-              </FormGroup>
-            </Col>
-            <Col>
-              <Row>
-                <Button>Submit</Button>
-                <Button
-                  onClick={this.formChange.bind(this, "Up")}
-                  style={{ marginLeft: "5px" }}
-                >
-                  Sign Up
-                </Button>
-              </Row>
-            </Col>
-          </Form>
-        </Container>
+        <div>
+          <Container className="Login">
+            <h2>Sign In</h2>
+            <Form
+              className="form"
+              onSubmit={e => this.submitLogin(e)}
+              size="sm"
+            >
+              <Col>
+                <FormGroup>
+                  <Label>Email</Label>
+                  <Input
+                    //type="email"
+                    name="email"
+                    //id="exampleEmail"
+                    placeholder="Enter your email here"
+                    value={email}
+                    valid={this.state.validate.emailState === "has-success"}
+                    invalid={this.state.validate.emailState === "has-danger"}
+                    onChange={e => {
+                      this.validateEmail(e);
+                      this.handleChange(e);
+                    }}
+                  />
+                  <FormFeedback valid />
+                  <FormFeedback>Please input a correct email.</FormFeedback>
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <Label for="examplePassword">Password</Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    //id="examplePassword"
+                    placeholder="********"
+                    value={password}
+                    onChange={e => this.handleChange(e)}
+                  />
+                </FormGroup>
+              </Col>
+              <Col>
+                <Row>
+                  <Button>Submit</Button>
+                  <Button
+                    onClick={this.formChange.bind(this, "Up")}
+                    style={{ marginLeft: "5px" }}
+                  >
+                    Sign Up
+                  </Button>
+                </Row>
+              </Col>
+            </Form>
+          </Container>
+        </div>
       );
     } else {
       return (
-        <Container className="Login">
-          <h2>Sign Up</h2>
-          <Form className="form" onSubmit={e => this.submitSignup(e)} size="sm">
-            <Col>
-              <FormGroup>
-                <Label>Name</Label>
-                <Input
-                  name="username"
-                  placeholder="Enter username here"
-                  value={username}
-                  onChange={e => {
-                    //this.validateEmail(e);
-                    this.handleChange(e);
-                  }}
-                />
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <Label>Email</Label>
-                <Input
-                  //type="email"
-                  name="email"
-                  //id="exampleEmail"
-                  placeholder="Enter your email here"
-                  value={email}
-                  valid={this.state.validate.emailState === "has-success"}
-                  invalid={this.state.validate.emailState === "has-danger"}
-                  onChange={e => {
-                    this.validateEmail(e);
-                    this.handleChange(e);
-                  }}
-                />
-                <FormFeedback valid />
-                <FormFeedback>Please input a correct email.</FormFeedback>
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <Label for="examplePassword">Password</Label>
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="********"
-                  value={password}
-                  onChange={e => this.handleChange(e)}
-                />
-              </FormGroup>
-            </Col>
-            <Row>
-              <Button>Submit</Button>{" "}
-              <Button
-                onClick={this.formChange.bind(this, "In")}
-                style={{ marginLeft: "5px" }}
-              >
-                Log In
-              </Button>
-            </Row>
-          </Form>
-        </Container>
+        <Router>
+          <AppNavBar />
+          <Container className="Login">
+            <h2>Sign Up</h2>
+            <Form
+              className="form"
+              onSubmit={e => this.submitSignup(e)}
+              size="sm"
+            >
+              <Col>
+                <FormGroup>
+                  <Label>Name</Label>
+                  <Input
+                    name="username"
+                    placeholder="Enter username here"
+                    value={username}
+                    onChange={e => {
+                      //this.validateEmail(e);
+                      this.handleChange(e);
+                    }}
+                  />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <Label>Email</Label>
+                  <Input
+                    //type="email"
+                    name="email"
+                    //id="exampleEmail"
+                    placeholder="Enter your email here"
+                    value={email}
+                    valid={this.state.validate.emailState === "has-success"}
+                    invalid={this.state.validate.emailState === "has-danger"}
+                    onChange={e => {
+                      this.validateEmail(e);
+                      this.handleChange(e);
+                    }}
+                  />
+                  <FormFeedback valid />
+                  <FormFeedback>Please input a correct email.</FormFeedback>
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <Label for="examplePassword">Password</Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    placeholder="********"
+                    value={password}
+                    onChange={e => this.handleChange(e)}
+                  />
+                </FormGroup>
+              </Col>
+              <Row>
+                <Button>Submit</Button>{" "}
+                <Button
+                  onClick={this.formChange.bind(this, "In")}
+                  style={{ marginLeft: "5px" }}
+                >
+                  Log In
+                </Button>
+              </Row>
+            </Form>
+          </Container>
+        </Router>
       );
     }
   }

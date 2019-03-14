@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import { Container } from "reactstrap";
 import { connect } from "react-redux";
 import { withCookies } from "react-cookie";
+import { BrowserRouter as Router } from "react-router-dom";
 
 var cart_id = ""; //cart_id of the logged user
 var name = ""; //user name
@@ -47,7 +48,8 @@ class Homepage extends Component {
             isLoggedin={this.props.logged}
             cookies={this.props.cookies}
           />
-          <Container>
+
+          <Container div style={{ marginTop: "5px" }}>
             <Login cookies={this.props.cookies} />
           </Container>
         </div>
