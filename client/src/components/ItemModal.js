@@ -1,22 +1,9 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Table,
-  Card,
-  CardImg,
-  CardText,
-  CardBody
-} from "reactstrap";
+import { Button, Table, Card, CardImg, CardText, CardBody } from "reactstrap";
 import { connect } from "react-redux";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import { addItem, getItems } from "../actions/itemActions";
-//import ItemCard from "./ItemCard";
 import tabla from "../Img/tabla.jpg";
 import piano from "../Img/piano.jpg";
 import organ from "../Img/organ.jpg";
@@ -24,26 +11,34 @@ import guitar from "../Img/guitar.jpg";
 import sax from "../Img/sax.jpg";
 import violin from "../Img/violin.jpg";
 
-const item = [guitar, tabla, piano, organ, sax, violin];
+//Shopping item details
+const item = [
+  { name: "Guitar", img: guitar, price: 35000 },
+  { name: "Tabla", img: tabla, price: 8000 },
+  { name: "Piano", img: piano, price: 76000 },
+  { name: "Organ", img: organ, price: 47000 },
+  { name: "Saxophone", img: sax, price: 74000 },
+  { name: "Violin", img: violin, price: 6000 }
+];
+
 var cart = "";
 
 function ItemCard(itmprop) {
   return (
-    <Card>
-      <CardImg width="30%" src={item[itmprop.id]} />
-      <h3>{itmprop.name}</h3>
+    <Card style={{ color: "grey" }}>
+      <CardImg src={item[itmprop.id].img} />
+      <h3>{item[itmprop.id].name}</h3>
       <CardBody>
-        <CardText>Rs. {itmprop.price}</CardText>
-
+        <CardText>Rs. {item[itmprop.id].price}</CardText>
+        <ReactNotification ref={itmprop.this.notificationDOMRef} />
         <Button
           onClick={() => {
-            //console.log(cart);
-            itmprop.this.toggle();
             itmprop.this.props.addItem({
               cart: cart,
-              name: itmprop.name,
+              name: item[itmprop.id].name,
               count: 1
             });
+            itmprop.this.addAlert(item[itmprop.id].name);
           }}
           size="lg"
         >
@@ -57,83 +52,71 @@ function ItemCard(itmprop) {
 class ItemModal extends Component {
   constructor(props) {
     super(props);
+    this.addNotification = this.addAlert.bind(this);
+    this.notificationDOMRef = React.createRef();
   }
 
   state = {
     modal: false,
     name: "",
-    cart: ""
-  };
-
-  toggle = () => {
-    this.setState({
-      modal: !this.state.modal
-    });
+    cart: "",
+    item: item
   };
 
   onSubmit = e => {
     e.preventDefault();
   };
 
+  //Notify when an item is added to the cart
+  addAlert(name) {
+    this.notificationDOMRef.current.addNotification({
+      title: "Successful",
+      message: name + " has been added to the cart!",
+      type: "success",
+      insert: "top",
+      container: "bottom-center",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
+      dismiss: { duration: 1000 },
+      dismissable: { click: true }
+    });
+  }
+
   render() {
     cart = this.props.cart_id;
-    //console.log(this.props);
 
     return (
       <div>
-        <Button
-          color="dark"
-          style={{ marginBottom: "2rem" }}
-          onClick={this.toggle}
-        >
-          Add Item
-        </Button>
+        <Table borderless>
+          <tbody>
+            <tr>
+              <td>
+                <ItemCard id="0" this={this} />
+              </td>
+              <td>
+                <ItemCard id="1" this={this} />
+              </td>
 
-        <Modal isOpen={this.state.modal} toggle={this.toggle} size="lg">
-          <ModalHeader toggle={this.toggle}>Add to Shopping List</ModalHeader>
-          <ModalBody>
-            <Table borderless>
-              <tbody>
-                <tr>
-                  <td>
-                    <ItemCard id="0" name="Guitar" price="35000" this={this} />
-                  </td>
-                  <td>
-                    <ItemCard id="1" name="Tabla" price="8000" this={this} />
-                  </td>
+              <td>
+                <ItemCard id="2" this={this} />
+              </td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <td>
+                <ItemCard id="3" this={this} />
+              </td>
 
-                  <td>
-                    <ItemCard id="2" name="Piano" price="98000" this={this} />
-                  </td>
-                </tr>
-              </tbody>
-              <tbody>
-                <tr>
-                  <td>
-                    <ItemCard
-                      id="3"
-                      name="Keyboard"
-                      price="125000"
-                      this={this}
-                    />
-                  </td>
-
-                  <td>
-                    <ItemCard
-                      id="4"
-                      name="Saxophone"
-                      price="64000"
-                      this={this}
-                    />
-                  </td>
-                  <td>
-                    <ItemCard id="5" name="Violin" price="6500" this={this} />
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-          </ModalBody>
-        </Modal>
+              <td>
+                <ItemCard id="4" this={this} />
+              </td>
+              <td>
+                <ItemCard id="5" this={this} />
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </div>
     );
   }

@@ -1,13 +1,4 @@
-import {
-  Container,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  Button,
-  Table,
-  Col
-} from "reactstrap";
+import { Container, InputGroup, Input, Table, Col } from "reactstrap";
 
 import { Transition, TransitionGroup } from "react-transition-group";
 import axios from "axios";
@@ -20,14 +11,20 @@ import {
   updateItem
 } from "../actions/itemActions";
 import PropTypes from "prop-types";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Fab from "@material-ui/core/Fab";
 
-var cart = "";
+//Item list and prices
+const item = [
+  { name: "Guitar", price: 35000 },
+  { name: "Tabla", price: 8000 },
+  { name: "Piano", price: 76000 },
+  { name: "Organ", price: 47000 },
+  { name: "Saxophone", price: 74000 },
+  { name: "Violin", price: 6000 }
+];
 
 class ShoppingList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     value: 1, //this.props.value
     cart: ""
@@ -40,6 +37,8 @@ class ShoppingList extends Component {
   onDeleteClick = id => {
     this.props.deleteItem(id);
   };
+
+  //Change the quantity of an item in the cart
   changeValue = (func, count, name) => {
     const item_details = {
       cart: this.props.cart_id,
@@ -54,18 +53,31 @@ class ShoppingList extends Component {
         }
       })
       .catch(err => console.log(err));
+
+    this.props.getItems(this.props.cart_id); //Update the states
   };
 
-  formatCount() {
-    const { value } = this.state;
+  //calculate the total price for each item
+  priceCalc(name, count) {
+    var index = item
+      .map(function(obj) {
+        return obj.name;
+      })
+      .indexOf(name);
 
-    return value;
+    const val = item[index].price;
+    return val * count;
   }
 
   render() {
     const { items } = this.props.item;
-    //cart = this.props.cart_id;
-    //console.log(cart);
+    if (items.length === 0)
+      return (
+        <Container>
+          <TransitionGroup className="shopping-list" />
+          <h5>Your cart is empty</h5>
+        </Container>
+      );
     return (
       <div>
         <Container>
@@ -76,22 +88,23 @@ class ShoppingList extends Component {
                   <tbody>
                     <tr>
                       <td>
-                        <Button
+                        <Fab
                           className="remove-btn"
-                          color="danger"
-                          size="sm"
+                          size="small"
                           onClick={this.onDeleteClick.bind(this, _id)}
                         >
-                          &times;
-                        </Button>
+                          <DeleteIcon />
+                        </Fab>
+                      </td>
 
-                        {name}
+                      <td style={{ width: "200px" }}>
+                        <div style={{ marginTop: "10px" }}>{name}</div>
                       </td>
 
                       <td>
                         <div>
                           <InputGroup>
-                            <Col sm={1} md={{ size: 2, offset: 3 }}>
+                            <Col md={{ size: 3 }}>
                               <Input
                                 type="number"
                                 step="1"
@@ -102,12 +115,15 @@ class ShoppingList extends Component {
                                     e.target.value,
                                     name
                                   );
-
-                                  //console.log(e.target.value);
                                 }}
                               />
                             </Col>
                           </InputGroup>
+                        </div>
+                      </td>
+                      <td style={{ width: "100px" }}>
+                        <div style={{ marginTop: "10px" }}>
+                          Rs. {this.priceCalc(name, count)}
                         </div>
                       </td>
                     </tr>

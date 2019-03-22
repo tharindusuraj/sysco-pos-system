@@ -10,11 +10,11 @@ import {
   NavItem,
   NavLink,
   Container,
-  Modal,
-  ModalHeader,
-  ModalBody,
   Button
 } from "reactstrap";
+
+var welcome_msg;
+var btn_caption;
 
 class AppNavBar extends Component {
   state = {
@@ -37,11 +37,11 @@ class AppNavBar extends Component {
 
   render() {
     if (this.props.isLoggedin === false) {
-      var welcome_msg = "";
-      var btn_caption = "Log In";
+      welcome_msg = "";
+      btn_caption = "Log In";
     } else {
-      var welcome_msg = "Welcome " + this.props.username + "!";
-      var btn_caption = "Logout";
+      welcome_msg = "Welcome " + this.props.username + "!";
+      btn_caption = "Logout";
     }
     return (
       <div>

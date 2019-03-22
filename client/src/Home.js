@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavBar from "./components/AppNavBar";
-import ShoppingList from "./components/shoppingList";
+import ShoppingListModal from "./components/ShoppingListModal";
 import { Provider } from "react-redux";
 import store from "./store";
 import ItemModal from "./components/ItemModal";
@@ -10,7 +10,6 @@ import Login from "./components/Login";
 import { Container } from "reactstrap";
 import { connect } from "react-redux";
 import { withCookies } from "react-cookie";
-import { BrowserRouter as Router } from "react-router-dom";
 
 var cart_id = ""; //cart_id of the logged user
 var name = ""; //user name
@@ -35,8 +34,8 @@ class Homepage extends Component {
               username={this.props.username}
             />
             <Container>
+              <ShoppingListModal cart_id={this.props.cart_id} />
               <ItemModal cart_id={this.props.cart_id} />
-              <ShoppingList cart_id={this.props.cart_id} />
             </Container>
           </div>
         </Provider>
@@ -49,7 +48,7 @@ class Homepage extends Component {
             cookies={this.props.cookies}
           />
 
-          <Container div style={{ marginTop: "5px" }}>
+          <Container>
             <Login cookies={this.props.cookies} />
           </Container>
         </div>

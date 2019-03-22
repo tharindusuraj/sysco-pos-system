@@ -13,9 +13,6 @@ import {
 import "./Login.css";
 import axios from "axios";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Redirect } from "react-router-dom";
-import Route from "react-router-dom/Route";
-import AppNavBar from "./AppNavBar";
 
 class Login extends Component {
   constructor(props) {
@@ -27,11 +24,12 @@ class Login extends Component {
       validate: {
         emailState: ""
       },
-      signInUp: "In"
+      signInUp: "In" //Stores which form is active from signin and signup
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
+  //Check for a valid email address
   validateEmail(e) {
     const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const { validate } = this.state;
@@ -73,24 +71,29 @@ class Login extends Component {
       .post("http://localhost:5000/api/users/login", credentials)
       .then(res => {
         if (res.data) {
+          //if login details are correct,
+          //call the logReducer
           if (res.data.success === true) {
             this.props.onLogin(res.data.id, res.data.name); //pass cart id to logReducer
 
             //Set cookies to save user_id and user_name
             this.props.cookies.set("loggedUserId", res.data.id, {
               path: "/",
-              maxAge: 100
+              maxAge: 1000
             });
             this.props.cookies.set("loggedUserName", res.data.name, {
               path: "/",
-              maxAge: 100
+              maxAge: 1000
             });
+          } else {
+            alert(res.data.msg); //if login fails show the error msg
           }
         }
       })
       .catch(err => console.log(err));
   }
 
+  //Post user details of signup form
   submitSignup(e) {
     e.preventDefault();
 
@@ -104,10 +107,15 @@ class Login extends Component {
     axios
       .post("http://localhost:5000/api/users/register", credentials)
       .then(res => {
+        //if response data is available check the validity
         if (res.data) {
           if (res.data.name === this.state.username) {
-            alert("Signup succeful!");
+            alert("Signup succesful!");
             this.formChange("In");
+          }
+
+          if (!res.data.success) {
+            alert(res.data.msg);
           }
         }
       })
@@ -176,8 +184,7 @@ class Login extends Component {
       );
     } else {
       return (
-        <Router>
-          <AppNavBar />
+        <div>
           <Container className="Login">
             <h2>Sign Up</h2>
             <Form
@@ -242,7 +249,7 @@ class Login extends Component {
               </Row>
             </Form>
           </Container>
-        </Router>
+        </div>
       );
     }
   }

@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 import Homepage from "../Home";
 import { mount } from "./enzyme";
-import { NavbarBrand, Button, AppNavBar } from "reactstrap";
 
 const middlewares = [thunk];
 

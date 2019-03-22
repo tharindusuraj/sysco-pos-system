@@ -19,7 +19,6 @@ router.get("/:cart", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  //console.log(req.body);
   Item.findOneAndUpdate(
     { cart: req.body.cart, name: req.body.name },
     { $inc: { count: 1 } },
@@ -34,7 +33,9 @@ router.post("/", (req, res) => {
           name: req.body.name,
           count: req.body.count
         });
-        newItem.save().then(item => res.json(item));
+        newItem.save().then(item => {
+          res.json(item);
+        });
       }
     })
 
